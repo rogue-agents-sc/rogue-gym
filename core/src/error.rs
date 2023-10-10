@@ -68,7 +68,7 @@ pub trait FailExt: Fail + Sized {
 pub enum ErrorId {
     #[fail(display = "Invalid index access: {:?}", _0)]
     Index(IndexError),
-    #[fail(display = "Invliad input key: {:?}", _0)]
+    #[fail(display = "Invalid input key: {:?}", _0)]
     InvalidInput(Key),
     #[fail(display = "Ignored input code: {:?}", _0)]
     IgnoredInput(InputCode),

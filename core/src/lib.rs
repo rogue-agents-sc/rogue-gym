@@ -264,10 +264,10 @@ impl RunTime {
                 Ok(vec![Reaction::UiTransition(ui)])
             }
             System::Save => Err(ErrorId::Unimplemented.into_with(|| {
-                "[rogue_gym_core::RunTime::check_interuppting] save command is unimplemented"
+                "[rogue_gym_core::RunTime::check_interupting] save command is unimplemented"
             })),
             _ => Err(ErrorId::IgnoredInput(InputCode::Sys(input))
-                .into_with(|| "rogue_gym_core::RunTime::check_interuppting")),
+                .into_with(|| "rogue_gym_core::RunTime::check_interrupting")),
         }
     }
     /// take draw function F and draw screen with it
