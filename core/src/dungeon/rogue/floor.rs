@@ -376,7 +376,10 @@ impl Floor {
         let size = self.field.size();
         let mut array = Array2::from_elem([size.ylen() as usize, size.xlen() as usize], false);
         size.into_iter().for_each(|cd| {
-            *array.get_mut_p(cd) = self.field.get_p(cd).is_visited();
+            // *array.get_mut_p(cd) = self.field.get_p(cd).is_visited();
+            let x = cd.0 as usize;
+            let y = cd.1 as usize;
+            *(unsafe { array.uget_mut([y, x]) }) = self.field.get_p(cd).is_visited();
         });
         array
     }
@@ -400,19 +403,35 @@ impl Floor {
         let inf = u32::max_value();
         let mut dist = Array2::from_elem([h.0 as usize, w.0 as usize], inf);
         let mut queue = VecDeque::new();
-        *dist.get_mut_p(from) = 0;
+
+        //*dist.get_mut_p(from) = 0;
+        let x = from.x.0 as usize;
+        let y = from.y.0 as usize;
+        *(unsafe { dist.uget_mut([y, x]) }) = 0;
+
         queue.push_back(from);
         while let Some(current) = queue.pop_front() {
             for d in Direction::into_enum_iter().take(8) {
                 let next = current + d.to_cd();
-                let cdist = *dist.get_p(current);
-                if let Ok(ndist) = dist.try_get_mut_p(next) {
-                    if *ndist != inf || self.can_move_impl(current, d, is_enemy) != Some(true) {
-                        continue;
-                    }
-                    queue.push_back(next);
-                    *ndist = cdist + 1;
+
+                // let cdist = *dist.get_p(current);
+                let tmp: u32;
+                {
+                    let x = current.x.0 as usize;
+                    let y = current.y.0 as usize;
+                    tmp = *(unsafe { dist.uget([y, x]) });
                 }
+
+                // let ndist = dist.get_mut_p(next);
+                let x = next.x.0 as usize;
+                let y = next.y.0 as usize;
+                let ndist = unsafe { dist.uget_mut([y, x]) };
+
+                if *ndist != inf || self.can_move_impl(current, d, is_enemy) != Some(true) {
+                    continue;
+                }
+                queue.push_back(next);
+                *ndist = tmp + 1;
             }
         }
         dist

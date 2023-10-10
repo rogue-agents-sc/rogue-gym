@@ -353,7 +353,11 @@ impl DungeonTrait for Dungeon {
             if skip(&DungeonPath::from(Address::new(cur.level, next))) {
                 continue;
             }
-            let ndist = *dist_map.get_p(next);
+            // let ndist = *dist_map.get_p(next);
+            let x = next.x.0 as usize;
+            let y = next.y.0 as usize;
+            let ndist = *(unsafe { dist_map.uget([y, x]) });
+
             if ndist == 0 && current_floor.can_move_enemy(cur.cd, d) {
                 return MoveResult::Reach;
             }
