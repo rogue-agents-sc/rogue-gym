@@ -47,7 +47,7 @@ struct PlayerState {
     is_terminal: bool,
 }
 
-impl<'p> PlayerState {
+impl PlayerState {
     fn new(w: X, h: Y, symbols: u8) -> Self {
         let (w, h) = (w.0 as usize, h.0 as usize);
         PlayerState {
@@ -118,20 +118,6 @@ impl<'p> PlayerState {
         Zip::from(hist_array).and(&self.history).apply(|p, &r| {
             *p = if r { 1.0 } else { 0.0 };
         });
-    }
-
-    // dunder methods
-    fn __repr__(&'p self) -> String {
-        let mut dungeon = self.dungeon_str().fold(String::new(), |mut res, s| {
-            res.push_str(s);
-            res.push('\n');
-            res
-        });
-        dungeon.push_str(&format!("{}", self.status));
-        dungeon
-    }
-    fn __str__(&'p self) -> String {
-        self.__repr__()
     }
 }
 
@@ -213,6 +199,19 @@ impl PlayerState {
         });
         self.copy_hist(&array, offset);
         Ok(array)
+    }
+    // dunder methods
+    fn __repr__(&self) -> String {
+        let mut dungeon = self.dungeon_str().fold(String::new(), |mut res, s| {
+            res.push_str(s);
+            res.push('\n');
+            res
+        });
+        dungeon.push_str(&format!("{}", self.status));
+        dungeon
+    }
+    fn __str__(&self) -> String {
+        self.__repr__()
     }
 }
 
