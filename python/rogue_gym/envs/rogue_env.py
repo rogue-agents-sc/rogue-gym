@@ -112,17 +112,17 @@ class RogueEnv(gym.Env):
 
     # Same as data/keymaps/ai.json
     ACTION_MEANINGS = {
-        'u': 'MOVE_RIGHTUP',
-        'j': 'MOVE_DOWN',
+        '.': 'NO_OPERATION',
         'h': 'MOVE_LEFT',
+        'j': 'MOVE_DOWN',
         'k': 'MOVE_UP',
-        'l': 'MOVE_RIGHT',
-        'y': 'MOVE_LEFTUP',
-        'b': 'MOVE_LEFTDOWN',
+        'l': 'MOVE_RIGHT', 
         'n': 'MOVE_RIGHTDOWN',
+        'b': 'MOVE_LEFTDOWN',
+        'u': 'MOVE_RIGHTUP',
+        'y': 'MOVE_LEFTUP',
         '>': 'DOWNSTAIR',
         's': 'SEARCH',
-        '.': 'NO_OPERATION',
     }
 
     ACTIONS = [
